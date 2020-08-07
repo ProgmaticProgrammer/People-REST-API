@@ -14,7 +14,7 @@ ns.model = (function() {
 
     // Return the API
     return {
-        'read': function() {
+        read: function() {
             let ajax_options = {
                 type: 'GET',
                 url: 'api/people',
@@ -63,7 +63,7 @@ ns.model = (function() {
                 $event_pump.trigger('model_error', [xhr, textStatus, errorThrown]);
             })
         },
-        'delete': function(person_id) {
+        delete: function(person_id) {
             let ajax_options = {
                 type: 'DELETE',
                 url: `api/people/${person_id}`,
@@ -256,4 +256,7 @@ ns.controller = (function(m, v) {
     })
 }(ns.model, ns.view));
 
-
+// Get the data from the model after loaded
+function myFunction() {
+    // ns.model.read()
+}
