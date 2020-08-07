@@ -16,3 +16,12 @@ class PersonSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Person
         load_instance = True
+
+
+class Flight(db.Model):
+    __tablename__ = "flight"
+    flight_id = db.Column(db.Integer, primary_key=True)
+    origin = db.Column(db.String, nullable=False)
+    destination = db.Column(db.String, nullable=False)
+    duration = db.Column(db.Integer, nullable=False)
+    

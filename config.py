@@ -17,6 +17,9 @@ sqlite_url = "sqlite:///" + os.path.join(basedir, "people.db")
 # Configure the SqlAlchemy part of the app instance
 app.config["SQLALCHEMY_ECHO"] = True
 app.config["SQLALCHEMY_DATABASE_URI"] = sqlite_url
+# get notified before and after changes are committed to the database
+# models_committed and before_models_committed
+# https://flask-sqlalchemy.palletsprojects.com/en/2.x/signals/
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 # Create the SqlAlchemy db instance
