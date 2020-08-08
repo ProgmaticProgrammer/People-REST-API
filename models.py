@@ -10,20 +10,28 @@ class Person(db.Model):
     timestamp = db.Column(
         db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
     )
+    notes = db.relationship(
+        'Note', # forward reference SQLAlchemy class that Person class will be related to.
+        backref='person',
+        cascade='all, delete, delete-orphan',# delete all the Note instances associated with it
+        single_parent=True,
+        order_by='desc(Note.timestamp)'#from newest to oldest
+    )
 
+class Note(db.Model):
+    __tablename__ = 'note'
+    note_id = db.Column(db.Integer, primary_key=True)
+    person_id = db.Column(db.Integer, db.ForeignKey('person.person_id'))# 'person' table name here
+    content = db.Column(db.String, nullable=False)
+    timestamp = db.Column(
+        db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
+    )
 
 class PersonSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Person
         load_instance = True
 
-
-class Flight(db.Model):
-    __tablename__ = "flight"
-    flight_id = db.Column(db.Integer, primary_key=True)
-    origin = db.Column(db.String, nullable=False)
-    destination = db.Column(db.String, nullable=False)
-    duration = db.Column(db.Integer, nullable=False)
 
 class Property(db.Model):
     __tablename__ = "property"
