@@ -5,7 +5,7 @@ people data
 
 from flask import make_response, abort
 from config import db
-from models import Person, PersonSchema
+from models import Person, PersonSchema, Note
 
 
 def read_all():
@@ -33,7 +33,11 @@ def read_one(person_id):
     :return:            person matching id
     """
     # Get the person requested
-    person = Person.query.filter(Person.person_id == person_id).one_or_none()
+    person = (
+        Person.query.filter(Person.person_id == person_id)
+        .outerjoin(Note)
+        .one_or_none()
+    )
 
     # Did we find a person?
     if person is not None:
@@ -45,10 +49,7 @@ def read_one(person_id):
 
     # Otherwise, nope, didn't find that person
     else:
-        abort(
-            404,
-            "Person not found for Id: {person_id}".format(person_id=person_id),
-        )
+        abort(404,f"Person not found for Id: {person_id}")
 
 
 def create(person):
@@ -86,12 +87,7 @@ def create(person):
 
     # Otherwise, nope, person exists already
     else:
-        abort(
-            409,
-            "Person {fname} {lname} exists already".format(
-                fname=fname, lname=lname
-            ),
-        )
+        abort(409, f"Person {fname} {lname} exists already")
 
 
 def update(person_id, person):
@@ -109,36 +105,8 @@ def update(person_id, person):
         Person.person_id == person_id
     ).one_or_none()
 
-    # Try to find an existing person with the same name as the update
-    fname = person.get("fname")
-    lname = person.get("lname")
-
-    existing_person = (
-        Person.query.filter(Person.fname == fname)
-        .filter(Person.lname == lname)
-        .one_or_none()
-    )
-
-    # Are we trying to find a person that does not exist?
-    if update_person is None:
-        abort(
-            404,
-            "Person not found for Id: {person_id}".format(person_id=person_id),
-        )
-
-    # Would our update create a duplicate of another person already existing?
-    elif (
-        existing_person is not None and existing_person.person_id != person_id
-    ):
-        abort(
-            409,
-            "Person {fname} {lname} exists already".format(
-                fname=fname, lname=lname
-            ),
-        )
-
-    # Otherwise go ahead and update!
-    else:
+    # Did we find an existing person?
+    if update_person is not None:
 
         # turn the passed in person into a db object
         schema = PersonSchema()
@@ -156,6 +124,10 @@ def update(person_id, person):
 
         return data, 200
 
+    # Otherwise, nope, didn't find that person
+    else:
+        abort(404, f"Person not found for Id: {person_id}")
+
 
 def delete(person_id):
     """
@@ -171,13 +143,8 @@ def delete(person_id):
     if person is not None:
         db.session.delete(person)
         db.session.commit()
-        return make_response(
-            "Person {person_id} deleted".format(person_id=person_id), 200
-        )
+        return make_response(f"Person {person_id} deleted", 200)
 
     # Otherwise, nope, didn't find that person
     else:
-        abort(
-            404,
-            "Person not found for Id: {person_id}".format(person_id=person_id),
-        )
+        abort(404, f"Person not found for Id: {person_id}")

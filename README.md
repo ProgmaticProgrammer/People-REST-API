@@ -11,6 +11,7 @@ FIX: ModelSchema issue
 
 # flask-marshmallow>=0.12.0 (recommended)
 https://github.com/marshmallow-code/flask-marshmallow/blob/dev/CHANGELOG.rst#0120-2020-04-26
+https://marshmallow-sqlalchemy.readthedocs.io/en/latest/changelog.html#id7
 
 class AuthorSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
