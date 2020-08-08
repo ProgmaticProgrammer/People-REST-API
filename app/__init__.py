@@ -6,7 +6,7 @@ from flask_marshmallow import Marshmallow
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 # Create the connexion application instance
-connex_app = connexion.App(__name__, specification_dir=basedir)
+connex_app = connexion.FlaskApp(__name__, specification_dir=basedir)
 
 # Get the underlying Flask app instance
 app = connex_app.app
@@ -27,3 +27,9 @@ db = SQLAlchemy(app)
 
 # Initialize Marshmallow
 ma = Marshmallow(app)
+
+from . import routes
+from . import people, notes, property
+
+# Read the swagger.yml file to configure the endpoints
+connex_app.add_api("..\swagger.yml")

@@ -4,8 +4,8 @@ people data
 """
 
 from flask import make_response, abort, jsonify
-from config import db
-from models import Property, PropertySchema
+from . import db
+from .models import Property, PropertySchema
 
 
 def read_all():

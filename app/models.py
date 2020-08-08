@@ -1,6 +1,6 @@
 from datetime import datetime
-from config import db, ma
 from marshmallow import fields
+from . import db, ma
 
 class Person(db.Model):
     __tablename__ = "person"

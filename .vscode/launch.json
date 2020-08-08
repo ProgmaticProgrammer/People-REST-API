@@ -10,9 +10,9 @@
             "request": "launch",
             "cwd": "${workspaceRoot}",
             //"module": "flask",
-            "program": "${workspaceRoot}/server.py",
+            "program": "${workspaceRoot}/../main.py",
             "env": {
-                "FLASK_APP": "${workspaceRoot}/server.py",
+                "FLASK_APP": "${workspaceRoot}/../main.py",
                 "FLASK_ENV": "development",
                 "FLASK_DEBUG": "0"
             },
