@@ -166,4 +166,39 @@ paths:
         200:
           description: Successfully deleted a person
 
-
+  /property:
+    get:
+      operationId: property.read_all
+      tags:
+        - Property
+      summary: Read the entire set of properties, sorted by id
+      description: Read the entire set of properties, sorted by id
+      responses:
+        200:
+          description: Successfully read properties set operation
+          schema:
+            type: array
+            items:
+              properties:
+                property_id:
+                  type: integer
+                  description: Id of the property
+                title:
+                  type: string
+                  description: Title of the property
+                img_url:
+                  type: string
+                  description: Picture's url of the property
+                price_formatted:
+                  type: string
+                  description: Price of the property
+                bedroom_number:
+                  type: integer
+                  description: Bedroom number timestamp of the property
+                bathroom_number:
+                  type: integer
+                  description: Bathroom number timestamp of the property
+                summary:
+                  type: string
+                  description: Summary of the property                  
+                
